@@ -48,6 +48,9 @@ class Translator {
         $params = http_build_query(compact('text', 'to', 'from', 'contentType'));
         $request = new Browser(new Curl());
         $response = $request->get(static::TRANSLATE_URL . $params, $headers);
+        if ($response->getStatusCode() != 200) {
+            throw new \Exception(strip_tags($response->getContent()));
+        }
         return strip_tags($response->getContent());
     }
 
